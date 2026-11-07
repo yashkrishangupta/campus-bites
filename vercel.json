@@ -2,26 +2,55 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "frontend": {
-      "root": "frontend"
+      "root": "frontend/"
     },
     "backend": {
-      "root": "backend",
+      "root": "backend/",
+      "framework": "fastapi",
       "entrypoint": "main:app"
     }
   },
   "rewrites": [
     {
-      "source": "/api/:path*",
+      "source": "/shops/(.*)",
       "destination": {
-        "service": "backend",
-        "path": "/:path*"
+        "service": "backend"
       }
     },
     {
-      "source": "/:path*",
+      "source": "/shops",
       "destination": {
-        "service": "frontend",
-        "path": "/:path*"
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/items/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/meal-finder",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/reviews/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/analytics/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
       }
     }
   ]
