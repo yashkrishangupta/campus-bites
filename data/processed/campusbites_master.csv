@@ -1,0 +1,364 @@
+Shop Name,Item to Buy,Price,Category
+Annapurna,Plain Idli - 2 pc,40,South Indian
+Annapurna,Masala Idli - 2 pc,45,South Indian
+Annapurna,Wada - 2 pc,50,South Indian
+Annapurna,Plain Dosa,45,South Indian
+Annapurna,Onion Dosa,50,South Indian
+Annapurna,Masala Dosa,55,South Indian
+Annapurna,Egg Dosa,55,South Indian
+Annapurna,Butter Masala Dosa,65,South Indian
+Annapurna,Paneer Dosa,65,South Indian
+Annapurna,Plain Uthappam,50,South Indian
+Annapurna,Onion Uthappam,55,South Indian
+Annapurna,Tomato Uthappam,55,South Indian
+Annapurna,Onion Tomato Uthappam,55,South Indian
+Annapurna,Mix Uthappam,60,South Indian
+Annapurna,Plain Pesarattu,45,South Indian
+Annapurna,Onion Pesarattu,50,South Indian
+Annapurna,Jeera Pesarattu,55,South Indian
+Annapurna,Chilli Pesarattu,55,South Indian
+Annapurna,Ginger Pesarattu,55,South Indian
+Annapurna,"Plain Combo (Plain Dosa, 1 pc Idli, 1 pc Wada)",75,South Indian
+Annapurna,"Special Combo (Masala Dosa, 1 pc Idli, 1 pc Wada)",95,South Indian
+Annapurna,Lemon Rice,50,Main Course
+Annapurna,Curd Rice,50,Main Course
+Appetite Rolls,Single Aloo Roll,40,Fast Food
+Appetite Rolls,Double Aloo Roll,50,Fast Food
+Appetite Rolls,Single Veggie Roll,50,Fast Food
+Appetite Rolls,Double Veggie Roll,65,Fast Food
+Appetite Rolls,Single Paneer Roll,80,Fast Food
+Appetite Rolls,Single Paneer Bhurji Roll,80,Fast Food
+Appetite Rolls,Double Paneer Bhurji Roll,100,Fast Food
+Appetite Rolls,Single Soyabean Chaap Roll,70,Fast Food
+Appetite Rolls,Double Soyabean Chaap Roll,100,Fast Food
+Appetite Rolls,Single Egg Roll,40,Fast Food
+Appetite Rolls,Double Egg Roll,50,Fast Food
+Appetite Rolls,Triple Egg Roll,60,Fast Food
+Appetite Rolls,Single Chicken Roll,80,Fast Food
+Appetite Rolls,Single Egg Single Chicken Roll,90,Fast Food
+Appetite Rolls,Single Egg Double Chicken Roll,130,Fast Food
+Appetite Rolls,Double Egg Double Chicken Roll,140,Fast Food
+Appetite Rolls,Chicken Tikka Roll,100,Fast Food
+Appetite Rolls,Double Chicken Tikka Roll,130,Fast Food
+Appetite Rolls,Single Egg Single Chicken Tikka Roll,110,Fast Food
+Appetite Rolls,Double Chicken Seekh Roll,120,Fast Food
+Appetite Rolls,Single Egg Single Chicken Seekh Roll,100,Fast Food
+Appetite Rolls,Double Egg Double Chicken Seekh Roll,140,Fast Food
+Appetite Rolls,Single Mutton Seekh Roll,90,Fast Food
+Appetite Rolls,Double Mutton Seekh Roll,120,Fast Food
+Appetite Rolls,Single Egg Single Mutton Seekh Roll,100,Fast Food
+Appetite Rolls,Double Egg Double Mutton Seekh Roll,140,Fast Food
+Appetite Rolls,Malai Chicken Tikka Roll,110,Fast Food
+Appetite Rolls,Double Lemon Chicken Roll,120,Fast Food
+Appetite Rolls,Double Egg Double Chicken Tikka Roll,150,Fast Food
+Appetite Rolls,Single Chicken Seekh Roll,90,Fast Food
+Chai Garam,Handmade Coffee (Hot) - Regular,30,Beverages
+Chai Garam,Handmade Coffee (Hot) - Large,50,Beverages
+Chai Garam,Handmade Mocha Coffee (Hot) - Regular,40,Beverages
+Chai Garam,Handmade Mocha Coffee (Hot) - Large,60,Beverages
+Chai Garam,Hot Chocolate - Large,50,Beverages
+Chai Garam,Black Coffee - Regular,20,Beverages
+Chai Garam,Black Coffee - Large,30,Beverages
+Chai Garam,Cold Coffee,65,Beverages
+Chai Garam,Extra Strong Cold Coffee,75,Beverages
+Chai Garam,Cold Mocha Coffee,75,Beverages
+Chai Garam,Extra Strong Cold Mocha Coffee,85,Beverages
+Chai Garam,Oreo Shake,75,Beverages
+Chai Garam,Kitkat Chocolate Milk Shake,75,Beverages
+Chai Garam,Strawberry Shake,75,Beverages
+Chai Garam,Mango Shake,85,Beverages
+Chai Garam,Banana Shake,75,Beverages
+Chai Garam,Butterscotch Shake,75,Beverages
+Chai Garam,Kesar Pista Shake,85,Beverages
+Chai Garam,Peanut Butter Shake,85,Beverages
+Chai Garam,Peanut Butter Shake (large/extra),100,Beverages
+Chai Garam,Nimbu Pani,35,Beverages
+Chai Garam,Classic Lemonade,45,Beverages
+Chai Garam,Jeera Masala Soda,45,Beverages
+Chai Garam,Peach Mojito,55,Beverages
+Chai Garam,Green Apple Mojito,55,Beverages
+Chai Garam,Blue Heaven,55,Beverages
+Chai Garam,Virgin Mojito,55,Beverages
+Chai Garam,Watermelon Mojito,55,Beverages
+Chai Garam,Strawberry Cooler,55,Beverages
+Chai Garam,Q-Tea - Adrak (150 mL),25,Beverages
+Chai Garam,Q-Tea - Tulsi (150 mL),25,Beverages
+Chai Garam,Q-Tea - Elaichi (150 mL),35,Beverages
+Chai Garam,Q-Tea - Haldi Chai (150 mL),35,Beverages
+Chai Garam,Q-Tea - Kali Mirch (150 mL),35,Beverages
+Chai Garam,Q-Tea - Mini Kulhad (150 mL),30,Beverages
+Chai Garam,Q-Tea - Kulhad Tea (150 mL),40,Beverages
+Chai Garam,Q-Tea - Chai Garam Special (150 mL),60,Beverages
+Chai Garam,Double Q-Tea - Adrak Elaichi (150 mL),30,Beverages
+Chai Garam,Double Q-Tea - Adrak Tulsi (150 mL),30,Beverages
+Chai Garam,Double Q-Tea - Gur Elaichi (150 mL),35,Beverages
+Chai Garam,Double Q-Tea - Saunf Elaichi (150 mL),30,Beverages
+Chai Garam,Double Q-Tea - Dalchini Adrak (150 mL),30,Beverages
+Chai Garam,Double Q-Tea - Kulhad Double Flavour (150 mL),45,Beverages
+Chai Garam,Premium - Green Tea (250 mL),50,Beverages
+Chai Garam,Premium - Green Tea with Lemon Honey (250 mL),60,Beverages
+Chai Garam,Premium - Jasmine Green (250 mL),70,Beverages
+Chai Garam,Premium - Black Darjeeling (250 mL),50,Beverages
+Chai Garam,Premium - Black Darjeeling with Lemon Honey (250 mL),70,Beverages
+Chai Garam,Premium - Chamomile (250 mL),80,Beverages
+Chai Garam,Veg Pasta White/Red,75,Fast Food
+Chai Garam,Tandoori Sauce Pasta,85,Fast Food
+Chai Garam,Mix Sauce Pasta,85,Fast Food
+Chai Garam,Pink Pasta,85,Fast Food
+Chai Garam,Veg Corn Pasta,90,Fast Food
+Chai Garam,Cheese Corn Pasta,100,Fast Food
+Chai Garam,Chicken Pasta,90,Fast Food
+Chai Garam,Chicken Tandoori Pasta,100,Fast Food
+Chai Garam,Chicken Mix Pasta,110,Fast Food
+Chai Garam,Punjabi Pasta,100,Fast Food
+Chai Garam,Veg Wrap,70,Fast Food
+Chai Garam,Paneer Wrap,90,Fast Food
+Chai Garam,Tandoori Veg Wrap,80,Fast Food
+Chai Garam,Egg Wrap,90,Fast Food
+Chai Garam,Chicken Wrap,110,Fast Food
+Chai Garam,Tandoori Chicken Wrap,120,Fast Food
+Chai Garam,Veg Corn Wrap,80,Fast Food
+Chai Garam,Plain Maggie,30,Fast Food
+Chai Garam,Veg Maggie,40,Fast Food
+Chai Garam,Cheese Maggie,60,Fast Food
+Chai Garam,Masala Maggie,55,Fast Food
+Chai Garam,Tandoori Maggie,75,Fast Food
+Chai Garam,Egg Maggie,60,Fast Food
+Chai Garam,Chicken Maggie,80,Fast Food
+Chai Garam,Corn Maggie,60,Fast Food
+Chai Garam,Chilly Garlic Maggie,70,Fast Food
+Chai Garam,Hot and Spicy Maggie,50,Fast Food
+Chai Garam,Veg Sandwich,40,Fast Food
+Chai Garam,Cheese Garlic,55,Fast Food
+Chai Garam,American Corn,60,Snacks
+Chai Garam,Paneer Sandwich,65,Fast Food
+Chai Garam,Tandoori Paneer,70,Fast Food
+Chai Garam,Chicken Sandwich,80,Fast Food
+Chai Garam,Tandoori Sandwich,90,Fast Food
+Chai Garam,Peanut Butter,70,Fast Food
+Chai Garam,Paneer Twister,90,Fast Food
+Chai Garam,Tomato Cheese,90,Fast Food
+Chai Garam,Veg Oats,45,Snacks
+Chai Garam,Masala Oats,45,Snacks
+Chai Garam,Hot n Sour,30,Soups
+Chai Garam,Sweet Corn,30,Snacks
+Chai Garam,Thick Tomato,30,Soups
+Chai Garam,Corn Chaat,60,Snacks
+Chai Garam,Classic Fries,60,Beverages
+Chai Garam,Peri Peri Fries,70,Fast Food
+Chai Garam,Cheese Fries,80,Fast Food
+Chai Garam,Veg Nuggets (5 pcs),80,Fast Food
+Chai Garam,Chicken Nuggets (5 pcs),110,Fast Food
+Chai Garam,Veg Finger (5 pcs),70,Snacks
+Food Court,Plain Dosa,50,South Indian
+Food Court,Butter Plain Dosa,65,South Indian
+Food Court,Veg Spring Dosa,65,South Indian
+Food Court,Cheese Plain Dosa,80,South Indian
+Food Court,Masala Dosa,65,South Indian
+Food Court,Butter Masala Dosa,80,South Indian
+Food Court,Onion Masala Dosa,60,South Indian
+Food Court,Cheese Masala Dosa,90,South Indian
+Food Court,Mysore Masala Dosa,80,South Indian
+Food Court,Plain Mysore Dosa,65,South Indian
+Food Court,Cheese Chilli Dosa,90,South Indian
+Food Court,Schezwan Masala Dosa,70,South Indian
+Food Court,Paneer Masala Dosa,80,South Indian
+Food Court,Paneer Schezwan Dosa,80,South Indian
+Food Court,Plain Rawa Dosa,60,South Indian
+Food Court,Masala Rawa Dosa,75,South Indian
+Food Court,Rawa Butter Masala Dosa,80,South Indian
+Food Court,Schezwan Rawa Masala Dosa,80,South Indian
+Food Court,Plain Uttapam,50,South Indian
+Food Court,Onion Uttapam,60,South Indian
+Food Court,Onion Tomato Uttapam,60,South Indian
+Food Court,Mix Veg Uttapam,70,South Indian
+Food Court,Cheese Uttapam,85,South Indian
+Food Court,Idli Sambhar,50,South Indian
+Food Court,Vada Sambhar,55,South Indian
+Food Court,Masala Idli (2 pc),55,South Indian
+Food Court,Sambhar,20,South Indian
+Food Court,"South Indian Thali (Lemon Rice, Sambhar, Coconut Chutney, Tomato Chutney, 2 pc Idli, 1 pc Mini Uttapam)",115,South Indian
+Food Court,Veg Thali,75,Main Course
+Food Court,Veg Biryani,70,Main Course
+Food Court,Rajma Rice,50,Main Course
+Food Court,Choley Rice,50,Main Course
+Food Court,Kadhi Rice,50,Main Course
+Food Court,Special Veg Thali,125,Main Course
+Food Court,Egg Curry & Rice/Roti (2 pc),65,Main Course
+Food Court,Egg Biryani,70,Main Course
+Food Court,Non-Veg Thali,140,Main Course
+Food Court,Butter Naan (1 pc),25,Main Course
+Food Court,Tandoori Roti (1 pc),10,Main Course
+Food Court,Chicken with Roti/Rice,100,Main Course
+Food Court,Chicken Biryani,140,Main Course
+Food Court,Gravy Paneer with 2 pc Naan,120,Main Course
+Food Court,Pindi Chole with 2 pc Stuffed Kulcha,100,Main Course
+Food Court,Pindi Chole Poori with Raita,55,Main Course
+Food Court,Chicken Curry with Butter Naan,130,Main Course
+Food Court,Pindi Chole Bhature,70,Main Course
+Food Court,Muradabadi Veg Biryani,65,Main Course
+Food Court,Dal with Roti/Rice,50,Main Course
+Food Court,Fried Rice,70,Main Course
+Food Court,Noodles,70,Fast Food
+Food Court,Samosa,12,Snacks
+Food Court,Bread Pakoda,25,Snacks
+Food Court,Chole Samosa Chaat,25,Snacks
+Food Court,Plain Omelette,35,Snacks
+Food Court,Choley Poori,45,Main Course
+Food Court,Aloo Parantha,40,Main Course
+Food Court,Mix Parantha,45,Main Course
+Food Court,Tea,15,Beverages
+Food Court,Chole Bhatura,60,Main Course
+Food Court,Paneer Parantha,60,Main Course
+Food Court,Bread Omelette,50,Snacks
+Food Court,Coffee,22,Beverages
+Food Court,Aloo Stuffed Kulcha,40,Main Course
+Food Court,Plain Parantha with Choley,40,Main Course
+Food Court,Egg Parantha,50,Main Course
+Food Court,Poori Bhaji,45,Main Course
+Food Court,Pav Bhaji,45,Main Course
+Food Court,Poha,40,Snacks
+Food Court,Macaroni,40,Fast Food
+Food Court,Bread Roll,20,Fast Food
+Food Court,Gobhi Parantha,35,Main Course
+Food Court,Bread Butter,35,Snacks
+Food Court,Aloo Toast,35,Fast Food
+Food Court,Paneer Toast,40,Fast Food
+Food Court,Egg Bhurji with Plain (item wording partly obscured),60,Snacks
+Food Court,Red Sauce Pasta,50,Fast Food
+Food Court,Egg Half Fry,50,Snacks
+Food Court,Paneer Stuffed Kulcha,50,Main Course
+Food Court,Paneer Grilled Sandwich,80,Fast Food
+Food Court,Veg Sandwich,50,Fast Food
+Food Court,Gulab Jamun,20,Desserts
+Food Court,Chole Kulcha,55,Main Course
+Frisco,Ice Cream - Choco Chips,50,Desserts
+Frisco,Ice Cream - Choco Brownie,50,Desserts
+Frisco,Ice Cream - Butter Scotch,50,Desserts
+Frisco,Ice Cream - Tutty Fruity,50,Desserts
+Frisco,Ice Cream - American Nuts,50,Desserts
+Frisco,Ice Cream - Vanilla,50,Desserts
+Frisco,Ice Cream - Strawberry,50,Desserts
+Frisco,Manchurian Roll,60,Fast Food
+Frisco,Pasta in Spicy Red Sauce,75,Fast Food
+Frisco,Chilly Garlic Noodles Veg,75,Fast Food
+Frisco,Pasta in Creamy Cheese White Sauce,80,Fast Food
+Frisco,Egg Noodles,100,Fast Food
+Frisco,Pasta in Mixed Sauce,100,Fast Food
+Frisco,Chilly Garlic Noodles Non-Veg,100,Fast Food
+Frisco,Masala Omelet,60,Snacks
+Frisco,Masala Cheese Omelet,80,Snacks
+Frisco,Chilli Paneer Rice Bowl,140,Main Course
+Frisco,Chilli Chicken Rice Bowl,140,Main Course
+Frisco,Mexican Paneer Bowl,200,Main Course
+Frisco,Mexican Chicken Bowl,200,Main Course
+Frisco,Vanilla Shake,90,Beverages
+Frisco,Banana Shake,90,Beverages
+Frisco,Mango Shake,90,Beverages
+Frisco,Chocolate Shake,90,Beverages
+Frisco,Mix Berry Shake,100,Beverages
+Frisco,Oreo Blast Shake,100,Beverages
+Frisco,Death by Chocolate,100,Desserts
+Frisco,Aloo Schezwan Wrap,60,Fast Food
+Frisco,Vegetable Wrap,60,Fast Food
+Frisco,Soyachap Wrap,80,Fast Food
+Frisco,Paneer Masala Wrap,110,Fast Food
+Frisco,Paneer Bhujia Wrap,110,Fast Food
+Frisco,Egg Wrap,60,Fast Food
+Frisco,Double Egg Wrap,70,Fast Food
+Frisco,Chicken Wrap,120,Fast Food
+Frisco,Chicken Seekh Wrap,120,Fast Food
+Frisco,Malai Chicken Wrap,180,Fast Food
+Frisco,Pastries,60,Desserts
+Frisco,Choco Chip Muffins,60,Desserts
+Frisco,Chocolate Walnut Brownie,80,Desserts
+Frisco,Chocolate Bliss/Chocolate Excess Cake,80,Desserts
+Frisco,Classic Coffee,25,Beverages
+Frisco,Cappuccino,60,Beverages
+Frisco,Cafe Mocha,60,Beverages
+Frisco,Flat White,60,Beverages
+Frisco,Americano,60,Beverages
+Frisco,Café Latte,60,Beverages
+Frisco,Espresso Black Coffee,60,Beverages
+Frisco,Hot Chocolate,60,Beverages
+Frisco,Regular Tea,20,Beverages
+Frisco,Flavored Tea - Elaichi/Masala/Ginger,30,Beverages
+Frisco,Green Tea - Lemon & Lime,30,Beverages
+Frisco,Green Tea - Moroccan Mint,30,Beverages
+Frisco,Green Tea - Jasmine,30,Beverages
+Frisco,Green Tea - Earl Gray,30,Beverages
+Frisco,Green Tea - Lemongrass,30,Beverages
+Frisco,Tomato Clear Soup,30,Snacks
+Frisco,Kulhad Masala Chai,25,Beverages
+Frisco,Nestea Iced Tea - Lemon/Peach,60,Beverages
+Frisco,Lemonade,60,Beverages
+Frisco,Orange/Mango/Watermelon Sparkles,60,Beverages
+Frisco,Cafe Frappe,80,Beverages
+Frisco,Frappe Hazelnut,90,Beverages
+Frisco,Frappe Irish,90,Beverages
+Frisco,Frappe Mocha,90,Beverages
+Frisco,Sweet Lassi,70,Beverages
+Frisco,Maggi Noodle Masala,50,Fast Food
+Frisco,Ice Cream (Scooping),60,Desserts
+Frisco,Chili Cheese Toast,70,Fast Food
+Frisco,Vegetable Sandwich,80,Fast Food
+Frisco,Veg. Cheese Sandwich,100,Fast Food
+Frisco,Grilled Paneer Sandwich,100,Fast Food
+Frisco,Cheese Corn Toast Sandwich,100,Fast Food
+Frisco,Grilled Chicken Sandwich,100,Fast Food
+Frisco,Crispy Veg. Classic Burger,60,Beverages
+Frisco,Veg. Classic Cheese Burger,80,Beverages
+Frisco,Crispy Chicken Classic Burger,80,Beverages
+Frisco,Chicken Cheese Classic Burger,100,Beverages
+Frisco,Vegetable/Paneer Patties,40,Snacks
+Frisco,Thin Crust Pizzas,110,Fast Food
+Tulips,Zulu Bar,50,Desserts
+Tulips,Tripple Chocolate,70,Desserts
+Tulips,Choco Truffle,70,Desserts
+Tulips,Crunchy Chocobar,90,Desserts
+Tulips,Double Belgian Cone,99,Desserts
+Tulips,Swiss Choco Brownie Cone,90,Desserts
+Tulips,Rich Alphonso Mango Cone,75,Desserts
+Tulips,Choco Truffle (Stick Bar),70,Desserts
+Tulips,Crunchy Chocobar (Stick Bar),30,Desserts
+Tulips,Choco Berry,60,Desserts
+Tulips,Wild Berry,70,Desserts
+Tulips,Yogurt Berry,60,Desserts
+Tulips,American Nuts (Cup),35,Desserts
+Tulips,Choco Chip (Cup),40,Desserts
+Tulips,Crunchy Butterscotch (Brick),130,Desserts
+Tulips,American Nuts (Brick),170,Desserts
+Tulips,Red Velvet (Ice Cream Cake),350,Desserts
+Tulips,Chocolate (Ice Cream Cake),340,Desserts
+Tulips,Butter Scotch (Ice Cream Cake),280,Desserts
+Tulips,Gauva Chilly (Tub),250,Desserts
+Tulips,Nutty Belgian Dark Chocolate (Tub),300,Desserts
+Tulips,Rajwadi Falooda (Tub),300,Beverages
+Tulips,Vanilla Cream Roll,20,Fast Food
+Tulips,Chocolate Muffin with Choco Syrup,45,Desserts
+Tulips,Paneer Kachori,70,Snacks
+Tulips,Chicken Kachori,95,Snacks
+Tulips,Peach Ice Tea,45,Beverages
+Tulips,Lemon Ice Tea,45,Beverages
+Tulips,Nimbupani Masala,35,Beverages
+Tulips,Blueberry Lassi,45,Beverages
+Tulips,Cold Coffee,55,Beverages
+Tulips,Hazelnut Coffee,55,Beverages
+Tulips,Ice Cream Softy - Chocolate,55,Desserts
+Tulips,Ice Cream Softy - Vanilla,55,Desserts
+Tulips,Ice Cream Softy - Choco Vanilla,55,Desserts
+Tulips,Sundae - Chocolate,59,Desserts
+Tulips,Sundae - Vanilla,59,Desserts
+Tulips,Sundae - Strawberry,59,Desserts
+Tulips,Slush - Blue Lagoon,49,Beverages
+Tulips,Slush - Mojito Green,49,Beverages
+Tulips,Chicken Keema Masala Rice Bowl (Non-Veg),120,Main Course
+Tulips,Rajma Masala Rice Bowl (Veg),80,Main Course
+Tulips,Chilly Paneer Hot Dog (Veg),69,Fast Food
+Tulips,Pasta Bun Hot Dog (Veg),79,Fast Food
+Tulips,Salami Salad Hot Dog (Chicken),89,Fast Food
+Tulips,Seekh Kebab Hot Dog (Chicken),99,Fast Food
+Tulips,Batata Vada Sandwich (Veg),55,South Indian
+Tulips,Cheese Salad Sandwich (Veg),65,Fast Food
+Tulips,Afghani Spread Sandwich (Chicken),89,Fast Food
+Tulips,Ham n Cheese Sandwich (Chicken),99,Fast Food

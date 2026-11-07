@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews | CampusBites</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="reviews">
+
+    <!-- ================= GIVE A REVIEW ================= -->
+    <section class="section" id="give">
+        <div class="give-grid">
+            <div class="section-heading" style="margin:0">
+                <h2>Tried something? Tell other students.</h2>
+                <p>Pick the shop and the dish, give it a star rating and say a few words. Your review shows up in the shop menu and the charts below straight away.</p>
+                <p style="margin-top:16px">Want to review straight from a menu? Open any <a href="index.html#shops" style="color:var(--primary-dark);font-weight:700">food shop</a> and use the <b>Review</b> button on a dish.</p>
+            </div>
+
+            <form class="card" id="reviewForm" novalidate>
+                <h3>Write a review</h3>
+                <label class="field" for="shopSelect">Food shop</label>
+                <select id="shopSelect"><option value="">Choose a shop...</option></select>
+
+                <label class="field" for="itemSelect">Dish</label>
+                <select id="itemSelect" disabled><option value="">Choose a shop first</option></select>
+
+                <label class="field">Your rating</label>
+                <div id="starBox"></div>
+
+                <label class="field" for="studentName">Your name</label>
+                <input type="text" id="studentName" maxlength="100" placeholder="e.g. Aarav">
+
+                <label class="field" for="reviewComment">Your review</label>
+                <textarea id="reviewComment" rows="4" maxlength="1000" placeholder="How was the taste, portion and value for money?"></textarea>
+
+                <button type="submit" class="primary-button" style="margin-top:18px">Submit review</button>
+                <p class="form-message" id="reviewMessage" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- ================= REVIEW INSIGHTS ================= -->
+    <section class="section alt" id="insights">
+        <div class="heading-row">
+            <div class="section-heading">
+                <h2>Review insights</h2>
+                <p>What student reviews tell us about food on campus.</p>
+            </div>
+            <div style="min-width:220px">
+                <select id="insightShop" aria-label="Filter insights by shop"><option value="">All food shops</option></select>
+            </div>
+        </div>
+
+        <div id="insightEmpty" class="empty-box" hidden>No reviews yet for this selection. <br><a class="primary-button" href="#give">Give the first review</a></div>
+
+        <div class="dash-grid" id="dashboard">
+            <div class="card kpi span-3"><b id="kReviews">–</b><span>Total reviews</span></div>
+            <div class="card kpi span-3"><b id="kAverage">–</b><span>Average rating</span></div>
+            <div class="card kpi span-3"><b id="kDishes">–</b><span>Dishes reviewed</span></div>
+            <div class="card kpi span-3"><b id="kHappy">–</b><span>Students who loved it (4-5★)</span></div>
+
+            <div class="card span-6"><h3>How students rate</h3><p class="sub">Number of reviews at each star level</p><div id="cDistribution"></div></div>
+            <div class="card span-6"><h3>Student mood</h3><p class="sub">Share of happy, okay and unhappy reviews</p><div id="cDonut"></div></div>
+
+            <div class="card span-6" id="shopCard"><h3>Shop leaderboard</h3><p class="sub">Average rating per food shop (number of reviews in brackets)</p><div id="cShops"></div></div>
+            <div class="card span-6"><h3>Food category ratings</h3><p class="sub">Which kinds of food students enjoy most</p><div id="cCategories"></div></div>
+
+            <div class="card span-12"><h3>Reviews over time</h3><p class="sub">Last 30 days: how many reviews came in and how the average rating moved</p><div id="cTrend"></div></div>
+
+            <div class="card span-12"><h3>Does paying more get you better food?</h3><p class="sub">Every reviewed dish: price against rating. Hover a bubble for details.</p><div id="cScatter"></div></div>
+
+            <div class="card span-4"><h3>🏆 Top rated</h3><p class="sub">Students' favourites</p><div id="lTop"></div></div>
+            <div class="card span-4"><h3>🔥 Most reviewed</h3><p class="sub">Talked about the most</p><div id="lMost"></div></div>
+            <div class="card span-4"><h3>🛠️ Needs improvement</h3><p class="sub">Dishes rated below 4★</p><div id="lLow"></div></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-heading"><h2>Latest reviews</h2></div>
+        <div class="feed" id="feed"></div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="charts.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const params = new URLSearchParams(location.search);
+        let allItems = [];
+
+        const picker = mountStarPicker($("#starBox"));
+        $("#studentName").value = savedName();
+
+        // ---------- Review form: shop -> dish ----------
+        function fillItems() {
+            const shopId = +$("#shopSelect").value;
+            const select = $("#itemSelect");
+
+            if (!shopId) { select.innerHTML = '<option value="">Choose a shop first</option>'; select.disabled = true; return; }
+
+            const items = allItems.filter(i => i.shop_id === shopId);
+            const categories = [...new Set(items.map(i => i.category || "Other"))];
+
+            select.innerHTML = '<option value="">Choose a dish...</option>' + categories.map(c =>
+                `<optgroup label="${escapeHTML(c)}">${items.filter(i => (i.category || "Other") === c).map(i =>
+                    `<option value="${i.id}">${escapeHTML(i.name)} (${money(i.price)})</option>`).join("")}</optgroup>`).join("");
+            select.disabled = false;
+        }
+
+        async function setup() {
+            try {
+                const [shops, items] = await Promise.all([api("/shops"), api("/items")]);
+                allItems = items;
+                shops.forEach(s => {
+                    const o = `<option value="${s.id}">${escapeHTML(s.name)}</option>`;
+                    $("#shopSelect").insertAdjacentHTML("beforeend", o);
+                    $("#insightShop").insertAdjacentHTML("beforeend", o);
+                });
+                if (params.get("shop")) { $("#shopSelect").value = params.get("shop"); fillItems(); }
+            } catch (error) {
+                $("#reviewMessage").className = "form-message err";
+                $("#reviewMessage").textContent = error.message;
+            }
+        }
+
+        $("#shopSelect").addEventListener("change", fillItems);
+
+        $("#reviewForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const msg = $("#reviewMessage");
+            const itemId = $("#itemSelect").value;
+            const name = $("#studentName").value.trim();
+            const comment = $("#reviewComment").value.trim();
+            const button = $("#reviewForm button[type=submit]");
+
+            msg.className = "form-message err";
+            if (!$("#shopSelect").value) { msg.textContent = "Please choose a food shop."; return; }
+            if (!itemId) { msg.textContent = "Please choose the dish you ate."; return; }
+            if (!picker.value) { msg.textContent = "Please give a star rating."; return; }
+            if (name.length < 2) { msg.textContent = "Please enter your name."; return; }
+            if (comment.length < 2) { msg.textContent = "Please write a short review."; return; }
+
+            button.disabled = true;
+            button.textContent = "Submitting...";
+            try {
+                await sendReview(itemId, name, picker.value, comment);
+                msg.className = "form-message ok";
+                msg.textContent = "Thank you! Your review has been added.";
+                $("#reviewComment").value = "";
+                $("#itemSelect").value = "";
+                picker.reset();
+            } catch (error) {
+                msg.textContent = error.message;
+            } finally {
+                button.disabled = false;
+                button.textContent = "Submit review";
+            }
+        });
+
+        // ---------- Insights ----------
+        async function loadInsights() {
+            const shopId = $("#insightShop").value;
+            const q = shopId ? `?shop_id=${shopId}` : "";
+            try {
+                const [data, recent] = await Promise.all([
+                    api(`/analytics/reviews${q}`),
+                    api(`/reviews/recent?limit=9${shopId ? "&shop_id=" + shopId : ""}`)
+                ]);
+                const t = data.totals;
+                const empty = t.reviews === 0;
+
+                $("#insightEmpty").hidden = !empty;
+                $("#dashboard").hidden = empty;
+
+                $("#kReviews").textContent = t.reviews;
+                $("#kAverage").textContent = t.average_rating != null ? t.average_rating.toFixed(2) + " ★" : "–";
+                $("#kDishes").textContent = t.dishes_reviewed;
+                $("#kHappy").textContent = t.reviews ? Math.round(t.positive / t.reviews * 100) + "%" : "–";
+
+                if (!empty) {
+                    drawDistribution($("#cDistribution"), data.distribution, t.reviews);
+                    drawDonut($("#cDonut"), t);
+                    drawBars($("#cShops"), data.by_shop.map(s => ({ label: s.shop, value: s.average_rating, note: `(${s.reviews})` })));
+                    drawBars($("#cCategories"), data.by_category.map(c => ({ label: c.category, value: c.average_rating, note: `(${c.reviews})` })));
+                    drawTrend($("#cTrend"), data.trend);
+                    drawScatter($("#cScatter"), data.price_vs_rating);
+                    drawLeaderboard($("#lTop"), data.top_items, "No reviews yet.");
+                    drawLeaderboard($("#lMost"), data.most_reviewed, "No reviews yet.");
+                    drawLeaderboard($("#lLow"), data.needs_love, "Nothing below 4★ with 2+ reviews. Great news!");
+                }
+
+                $("#feed").innerHTML = recent.length ? recent.map(r => `
+                    <div class="review-card">
+                        <div class="top"><strong>${escapeHTML(r.student_name)}</strong>${starsHTML(r.rating)}</div>
+                        <small>${escapeHTML(r.item_name)} · ${escapeHTML(r.shop_name)} · ${timeAgo(r.created_at)}</small>
+                        <p>${escapeHTML(r.comment || "")}</p>
+                    </div>`).join("") : '<p class="muted">No reviews yet.</p>';
+
+            } catch (error) {
+                $("#feed").innerHTML = `<p class="empty-message">${escapeHTML(error.message)}</p>`;
+            }
+        }
+
+        $("#insightShop").addEventListener("change", loadInsights);
+        document.addEventListener("review-added", loadInsights);
+
+        await setup();
+        loadInsights();
+    });
+    </script>
+</body>
+</html>

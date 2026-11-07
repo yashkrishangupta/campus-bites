@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | CampusBites</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="shop">
+
+    <a class="back-link" href="index.html#shops">← All food shops</a>
+
+    <div class="shop-header" id="shopHeader"><p class="loading-message" style="flex:1">Loading shop...</p></div>
+
+    <section class="section" style="padding-top:34px">
+        <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="🔍 Search this menu..." aria-label="Search this menu">
+            <select id="sortSelect" aria-label="Sort dishes">
+                <option value="name">Menu order</option>
+                <option value="rating">Top rated first</option>
+                <option value="price_asc">Price: low to high</option>
+                <option value="price_desc">Price: high to low</option>
+            </select>
+            <input type="number" id="priceFilter" min="0" placeholder="Max price (₹)" aria-label="Maximum price">
+        </div>
+        <div class="chip-row" id="categoryChips"></div>
+        <p class="result-count" id="resultCount"></p>
+        <div id="menuContainer"></div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const shopId = new URLSearchParams(location.search).get("id");
+        let shop = null, items = [], category = "";
+
+        // ---------- Load shop details and menu ----------
+        async function load() {
+            if (!shopId) { $("#shopHeader").innerHTML = '<p class="empty-message">No shop selected. <a href="index.html#shops">Choose a shop</a></p>'; return; }
+            try {
+                [shop, items] = await Promise.all([
+                    api(`/shops/${encodeURIComponent(shopId)}`),
+                    api(`/items/search?shop_id=${encodeURIComponent(shopId)}`)
+                ]);
+                document.title = `${shop.name} menu | CampusBites`;
+                renderHeader();
+                renderChips();
+                renderMenu();
+            } catch (error) {
+                $("#shopHeader").innerHTML = `<p class="empty-message" style="flex:1">${escapeHTML(error.message)} <a href="index.html#shops">Back to shops</a></p>`;
+            }
+        }
+
+        function renderHeader() {
+            $("#shopHeader").innerHTML = `
+                <div class="shop-icon">${shopEmoji(shop.name)}</div>
+                <div>
+                    <h1>${escapeHTML(shop.name)}</h1>
+                    <div class="shop-facts">
+                        <div class="fact"><b>${shop.total_items}</b><span>dishes</span></div>
+                        <div class="fact"><b>${money(shop.min_price)} – ${money(shop.max_price)}</b><span>price range</span></div>
+                        <div class="fact"><b>${money(shop.avg_price)}</b><span>average price</span></div>
+                        <div class="fact"><b>${shop.average_rating != null ? "★ " + shop.average_rating.toFixed(1) : "–"}</b><span>${shop.total_reviews} review${shop.total_reviews === 1 ? "" : "s"}</span></div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a class="primary-button" href="meal.html?shop=${encodeURIComponent(shop.name)}">Find a meal here</a>
+                    <a class="secondary-button" href="reviews.html?shop=${shop.id}#give">★ Give Review</a>
+                </div>`;
+        }
+
+        function renderChips() {
+            $("#categoryChips").innerHTML =
+                `<button class="chip ${category === "" ? "on" : ""}" data-cat="">All (${shop.total_items})</button>` +
+                shop.categories.map(c =>
+                    `<button class="chip ${category === c.name ? "on" : ""}" data-cat="${escapeHTML(c.name)}">${escapeHTML(c.name)} (${c.count})</button>`).join("");
+        }
+
+        // ---------- Filter, sort and show ----------
+        function renderMenu() {
+            const q = $("#searchInput").value.trim().toLowerCase();
+            const max = $("#priceFilter").value;
+            const sort = $("#sortSelect").value;
+
+            let list = items.filter(i =>
+                (!category || i.category === category) &&
+                (!q || i.name.toLowerCase().includes(q)) &&
+                (max === "" || i.price <= +max));
+
+            // Sorting is done on the page so it feels instant
+            const quality = i => i.total_reviews ? (i.total_reviews * i.average_rating + 7) / (i.total_reviews + 2) : 3.5;
+            if (sort === "price_asc") list.sort((a, b) => a.price - b.price);
+            else if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
+            else if (sort === "rating") list.sort((a, b) => quality(b) - quality(a) || b.total_reviews - a.total_reviews);
+
+            $("#resultCount").textContent = `Showing ${list.length} of ${items.length} dishes`;
+            const box = $("#menuContainer");
+            box.innerHTML = "";
+
+            if (!list.length) {
+                box.innerHTML = '<p class="empty-message">No dishes match your filters. Try clearing them.</p>';
+                return;
+            }
+
+            // Group by category when showing the plain menu order
+            const grouped = sort === "name" && !category;
+            const groups = grouped
+                ? [...new Set(list.map(i => i.category || "Other"))].map(c => [c, list.filter(i => (i.category || "Other") === c)])
+                : [[null, list]];
+
+            groups.forEach(([name, group]) => {
+                if (name) box.insertAdjacentHTML("beforeend", `<h3 class="cat-heading">${escapeHTML(name)} <small>${group.length} dishes</small></h3>`);
+                const grid = document.createElement("div");
+                grid.className = "menu-grid";
+                group.forEach(item => grid.appendChild(menuItemCard(item)));
+                box.appendChild(grid);
+            });
+        }
+
+        // ---------- Events ----------
+        $("#categoryChips").addEventListener("click", e => {
+            const chip = e.target.closest("[data-cat]");
+            if (!chip) return;
+            category = chip.dataset.cat;
+            renderChips();
+            renderMenu();
+        });
+        ["input", "change"].forEach(ev => {
+            $("#searchInput").addEventListener(ev, renderMenu);
+            $("#sortSelect").addEventListener(ev, renderMenu);
+            $("#priceFilter").addEventListener(ev, renderMenu);
+        });
+
+        // New review added: refresh ratings (keeps filters)
+        document.addEventListener("review-added", async () => {
+            [shop, items] = await Promise.all([
+                api(`/shops/${encodeURIComponent(shopId)}`),
+                api(`/items/search?shop_id=${encodeURIComponent(shopId)}`)
+            ]);
+            renderHeader();
+            renderMenu();
+        });
+
+        load();
+    });
+    </script>
+</body>
+</html>

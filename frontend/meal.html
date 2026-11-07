@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Meal in Your Budget | CampusBites</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="meal">
+
+    <section class="section" style="padding-bottom:20px">
+        <div class="section-heading">
+            <h2>Find a meal in your budget</h2>
+            <p>Set what you want to spend and what you're craving. We'll build complete meals that fit, and rank them by what students rate best.</p>
+        </div>
+
+        <form class="finder" id="finderForm">
+            <div class="finder-grid">
+                <div>
+                    <label class="field" for="budgetInput" style="margin-top:0">How much can you spend?</label>
+                    <div class="budget-input"><span>₹</span><input type="number" id="budgetInput" min="1" max="5000" placeholder="100" required></div>
+                    <div class="chip-row" id="budgetChips">
+                        <button type="button" class="chip" data-b="50">₹50</button>
+                        <button type="button" class="chip" data-b="100">₹100</button>
+                        <button type="button" class="chip" data-b="150">₹150</button>
+                        <button type="button" class="chip" data-b="200">₹200</button>
+                        <button type="button" class="chip" data-b="300">₹300</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="field" style="margin-top:0">What are you craving? <span class="muted" style="font-weight:500">(pick one or more)</span></label>
+                    <div class="chip-row course-chips" id="courseChips">
+                        <button type="button" class="chip on" data-c="meal">🍛 Meal</button>
+                        <button type="button" class="chip" data-c="snack">🥨 Snack</button>
+                        <button type="button" class="chip on" data-c="drink">🥤 Drink</button>
+                        <button type="button" class="chip" data-c="dessert">🍰 Dessert</button>
+                    </div>
+                    <div class="options-row">
+                        <div>
+                            <label class="field" for="shopSelect" style="margin-top:6px">Food shop</label>
+                            <select id="shopSelect"><option value="">Any shop</option></select>
+                        </div>
+                        <div>
+                            <label class="field" for="sortSelect" style="margin-top:6px">Show me</label>
+                            <select id="sortSelect">
+                                <option value="match">Best match (value + rating)</option>
+                                <option value="rating">Highest rated</option>
+                                <option value="cheapest">Cheapest first</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="sameShop" checked> Get everything from one shop</label>
+                </div>
+            </div>
+            <div class="finder-actions">
+                <button type="submit" class="primary-button" id="findButton">Find my meal</button>
+                <button type="button" class="reset-button" id="resetButton">Reset</button>
+            </div>
+        </form>
+
+        <div id="resultsHead"></div>
+        <div id="results"></div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const params = new URLSearchParams(location.search);
+        const chosen = new Set(["meal", "drink"]);
+
+        const selectedCourses = () => [...chosen];
+
+        function syncChips() {
+            document.querySelectorAll("#courseChips .chip").forEach(c => c.classList.toggle("on", chosen.has(c.dataset.c)));
+            document.querySelectorAll("#budgetChips .chip").forEach(c => c.classList.toggle("on", c.dataset.b === $("#budgetInput").value));
+        }
+
+        // Fill the shop dropdown
+        try {
+            const shops = await api("/shops");
+            shops.forEach(s => $("#shopSelect").insertAdjacentHTML("beforeend", `<option value="${escapeHTML(s.name)}">${escapeHTML(s.name)}</option>`));
+        } catch (e) { /* the search will show the error */ }
+
+        // Start values from the link (from the home page or a shop page)
+        if (params.get("budget")) $("#budgetInput").value = params.get("budget");
+        if (params.get("shop")) $("#shopSelect").value = params.get("shop");
+        syncChips();
+
+        // ---------- Build the result cards ----------
+        function comboCard(combo, budget, index, sort) {
+            const el = document.createElement("div");
+            el.className = "combo" + (index === 0 && sort === "match" ? " best" : "");
+            const pct = Math.min(100, (combo.total_price / budget) * 100);
+            const names = combo.shops.length === 1 ? combo.shops[0] : combo.shops.join(" + ");
+
+            el.innerHTML = `
+                <div class="combo-top">
+                    <div>
+                        ${index === 0 && sort === "match" ? '<span class="badge">Top pick</span>' : ""}
+                        <h3>${shopEmoji(combo.shops[0])} ${escapeHTML(names)}</h3>
+                        <div class="muted" style="font-size:13px">${combo.items.length} item${combo.items.length > 1 ? "s" : ""}</div>
+                    </div>
+                    <div class="combo-total">${money(combo.total_price)}</div>
+                </div>
+                <div class="budget-bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+                <div class="budget-note"><span>${Math.round(pct)}% of your budget</span><span>${combo.left > 0 ? money(combo.left) + " left" : "Exactly on budget"}</span></div>
+                <ul class="combo-items"></ul>`;
+
+            const list = $(".combo-items", el);
+            combo.items.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span class="em">${COURSE_EMOJI[item.course] || "🍴"}</span>
+                    <div>
+                        <div class="nm">${escapeHTML(item.name)}</div>
+                        <div class="sub">${ratingPill(item.average_rating, item.total_reviews)}
+                            <button type="button" class="link-btn" data-act="see">Reviews</button>
+                            <button type="button" class="link-btn" data-act="write">Rate</button></div>
+                    </div>
+                    <span class="pr">${money(item.price)}</span>`;
+                $('[data-act="see"]', li).addEventListener("click", () => openReviews(item));
+                $('[data-act="write"]', li).addEventListener("click", () => openReviewForm(item));
+                list.appendChild(li);
+            });
+            return el;
+        }
+
+        // ---------- Search ----------
+        async function findMeal() {
+            const budget = +$("#budgetInput").value;
+            const head = $("#resultsHead"), box = $("#results");
+
+            if (!budget || budget <= 0) { toast("Please enter your budget."); $("#budgetInput").focus(); return; }
+
+            const query = new URLSearchParams({
+                budget, sort: $("#sortSelect").value, same_shop: $("#sameShop").checked, limit: 12
+            });
+            if (selectedCourses().length) query.set("courses", selectedCourses().join(","));
+            if ($("#shopSelect").value) query.set("shop", $("#shopSelect").value);
+
+            head.innerHTML = "";
+            box.innerHTML = '<p class="loading-message">Finding meals...</p>';
+            $("#findButton").disabled = true;
+
+            try {
+                const data = await api(`/meal-finder?${query}`);
+                const names = data.courses.join(" + ");
+
+                if (!data.results.length) {
+                    head.innerHTML = "";
+                    if (data.mode === "combo" && data.cheapest_possible == null) {
+                        box.innerHTML = `<div class="notice">No ${data.same_shop ? "single shop" : "combination"} offers <b>${names}</b> together${$("#shopSelect").value ? " at " + escapeHTML($("#shopSelect").value) : ""}. Try removing a craving${data.same_shop ? ' or untick "Get everything from one shop"' : ""}.</div>`;
+                    } else if (data.mode === "combo") {
+                        const gap = data.cheapest_possible - budget;
+                        box.innerHTML = `<div class="notice">Nothing fits <b>${money(budget)}</b> for ${names}. The cheapest option costs <b>${money(data.cheapest_possible)}</b>, so add ${money(gap)} or drop one of your cravings.</div>`;
+                    } else {
+                        box.innerHTML = `<div class="notice">No dishes cost ${money(budget)} or less. Try a higher budget.</div>`;
+                    }
+                    return;
+                }
+
+                head.innerHTML = `<div class="results-head">
+                    <h2>${data.mode === "combo" ? `Meals under ${money(budget)}` : `Dishes under ${money(budget)}`}</h2>
+                    <span class="muted">Showing ${data.results.length} of ${data.total_found} ${data.mode === "combo" ? "combinations" : "dishes"}${data.mode === "combo" ? ` · ${names}` : " · pick a craving above to build full meals"}</span></div>`;
+
+                box.innerHTML = "";
+                const grid = document.createElement("div");
+                grid.className = data.mode === "combo" ? "combo-grid" : "menu-grid";
+                data.results.forEach((r, i) => grid.appendChild(
+                    data.mode === "combo" ? comboCard(r, budget, i, data.sort) : menuItemCard(r, { showShop: true })));
+                box.appendChild(grid);
+
+            } catch (error) {
+                box.innerHTML = `<p class="empty-message">${escapeHTML(error.message)}</p>`;
+            } finally {
+                $("#findButton").disabled = false;
+            }
+        }
+
+        // ---------- Events ----------
+        $("#finderForm").addEventListener("submit", e => { e.preventDefault(); findMeal(); });
+
+        $("#budgetChips").addEventListener("click", e => {
+            const chip = e.target.closest("[data-b]");
+            if (!chip) return;
+            $("#budgetInput").value = chip.dataset.b;
+            syncChips();
+            findMeal();
+        });
+        $("#budgetInput").addEventListener("input", syncChips);
+
+        $("#courseChips").addEventListener("click", e => {
+            const chip = e.target.closest("[data-c]");
+            if (!chip) return;
+            chosen.has(chip.dataset.c) ? chosen.delete(chip.dataset.c) : chosen.add(chip.dataset.c);
+            syncChips();
+        });
+
+        $("#resetButton").addEventListener("click", () => {
+            $("#budgetInput").value = "";
+            $("#shopSelect").value = "";
+            $("#sortSelect").value = "match";
+            $("#sameShop").checked = true;
+            chosen.clear(); chosen.add("meal"); chosen.add("drink");
+            syncChips();
+            $("#resultsHead").innerHTML = ""; $("#results").innerHTML = "";
+        });
+
+        // New review: refresh ratings in the results
+        document.addEventListener("review-added", () => { if ($("#results").children.length) findMeal(); });
+
+        if (params.get("budget")) findMeal();
+    });
+    </script>
+</body>
+</html>

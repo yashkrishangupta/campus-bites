@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusBites | UPES Food Discovery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Good food is just <span>around the corner.</span></h1>
+            <p class="lead">Browse the menus of every food shop at UPES, find a meal that fits your budget, and see what other students really think.</p>
+
+            <div class="hero-buttons">
+                <a href="#shops" class="primary-button">Explore Food Shops</a>
+                <a href="meal.html" class="secondary-button">Find Meal in My Budget</a>
+                <a href="reviews.html#give" class="secondary-button">★ Give Review</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="big-emoji">🍔</div>
+                <h2>Your next favourite meal awaits!</h2>
+                <p id="heroLine">Menus from the food shops across UPES, all in one place.</p>
+                <div class="hero-mini" id="heroShops"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section class="stats">
+        <div class="stat"><b id="shopCount">–</b><span>Food shops</span></div>
+        <div class="stat"><b id="itemCount">–</b><span>Menu items</span></div>
+        <div class="stat"><b id="startPrice">–</b><span>Cheapest item</span></div>
+        <div class="stat"><b id="reviewCount">–</b><span>Student reviews</span></div>
+    </section>
+
+    <!-- ================= SECTION 1: FOOD SHOPS ================= -->
+    <section class="section" id="shops">
+        <div class="heading-row">
+            <div class="section-heading">
+                <h2>Explore food shops</h2>
+                <p>Pick a shop to open its full menu, with prices, ratings and student reviews for every dish.</p>
+            </div>
+        </div>
+        <div id="shopContainer" class="shop-container"><p class="loading-message">Loading food shops...</p></div>
+    </section>
+
+    <!-- ================= SECTION 2: BUDGET ================= -->
+    <section class="section alt" id="budget">
+        <div class="budget-band">
+            <div>
+                <h2>Got ₹100? Let's build you a meal.</h2>
+                <p>Tell us your budget and what you're craving. We'll put together full meals (like a main and a drink) that fit, ranked by what students rate highest.</p>
+            </div>
+            <div class="budget-box">
+                <label for="quickBudget">My budget</label>
+                <div class="chip-row" id="quickChips">
+                    <a class="chip" href="meal.html?budget=50">₹50</a>
+                    <a class="chip" href="meal.html?budget=100">₹100</a>
+                    <a class="chip" href="meal.html?budget=150">₹150</a>
+                    <a class="chip" href="meal.html?budget=200">₹200</a>
+                    <a class="chip" href="meal.html?budget=300">₹300</a>
+                </div>
+                <form class="input-row" id="quickForm">
+                    <input type="number" id="quickBudget" min="1" placeholder="Or type an amount (₹)">
+                    <button class="primary-button" type="submit">Find meal</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= STUDENT REVIEWS PREVIEW ================= -->
+    <section class="section" id="pulse">
+        <div class="heading-row">
+            <div class="section-heading">
+                <h2>What students are saying</h2>
+                <p>Live from the reviews written on CampusBites.</p>
+            </div>
+            <div class="hero-buttons">
+                <a href="reviews.html#insights" class="secondary-button">See all insights</a>
+                <a href="reviews.html#give" class="primary-button">Give Review</a>
+            </div>
+        </div>
+        <div class="dash-grid" id="pulseGrid">
+            <div class="card span-7"><h3>Shop ratings</h3><p class="sub">Average rating from student reviews</p><div id="pulseShops"></div></div>
+            <div class="card span-5"><h3>Top rated right now</h3><p class="sub">Ranked by rating and number of reviews</p><div id="pulseTop"></div></div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="charts.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        // Quick budget form -> meal finder page
+        $("#quickForm").addEventListener("submit", e => {
+            e.preventDefault();
+            const value = $("#quickBudget").value;
+            if (value && +value > 0) location.href = `meal.html?budget=${encodeURIComponent(value)}`;
+            else toast("Please enter a valid budget.");
+        });
+
+        async function load() {
+            try {
+                const shops = await api("/shops");
+                const itemTotal = shops.reduce((s, x) => s + x.total_items, 0);
+                const reviewTotal = shops.reduce((s, x) => s + x.total_reviews, 0);
+
+                $("#shopCount").textContent = shops.length;
+                $("#itemCount").textContent = itemTotal;
+                $("#startPrice").textContent = money(Math.min(...shops.map(s => s.min_price)));
+                $("#reviewCount").textContent = reviewTotal;
+                $("#heroLine").textContent = `Explore ${itemTotal} menu items across ${shops.length} food shops at UPES.`;
+
+                $("#heroShops").innerHTML = shops.slice(0, 4).map(s =>
+                    `<a href="shop.html?id=${s.id}">${shopEmoji(s.name)} ${escapeHTML(s.name)}</a>`).join("");
+
+                $("#shopContainer").innerHTML = shops.map(s => `
+                    <a class="shop-card" href="shop.html?id=${s.id}">
+                        <div class="shop-top">
+                            <div class="shop-icon">${shopEmoji(s.name)}</div>
+                            ${ratingPill(s.average_rating, s.total_reviews)}
+                        </div>
+                        <h3>${escapeHTML(s.name)}</h3>
+                        <p class="shop-meta">${s.total_items} items · ${money(s.min_price)} to ${money(s.max_price)}</p>
+                        <div class="tag-row">${s.categories.slice(0, 3).map(c => `<span class="tag">${escapeHTML(c.name)}</span>`).join("")}</div>
+                        <span class="shop-cta">View menu →</span>
+                    </a>`).join("");
+            } catch (error) {
+                $("#shopContainer").innerHTML = `<p class="empty-message">${escapeHTML(error.message)}</p>`;
+            }
+
+            try {
+                const data = await api("/analytics/reviews");
+                if (!data.totals.reviews) {
+                    $("#pulseGrid").innerHTML = '<div class="empty-box span-12" style="grid-column:1/-1">No reviews yet. Try a dish and be the first to review it!<br><a class="primary-button" href="reviews.html#give">Give Review</a></div>';
+                    return;
+                }
+                drawBars($("#pulseShops"), data.by_shop.map(s => ({ label: s.shop, value: s.average_rating, note: `(${s.reviews})` })));
+                drawLeaderboard($("#pulseTop"), data.top_items.slice(0, 4), "No reviews yet.");
+            } catch (error) {
+                $("#pulseGrid").innerHTML = `<p class="empty-message">${escapeHTML(error.message)}</p>`;
+            }
+        }
+
+        load();
+        document.addEventListener("review-added", load);
+    });
+    </script>
+</body>
+</html>
