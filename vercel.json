@@ -8,7 +8,7 @@
       "root": ".",
       "framework": "fastapi",
       "entrypoint": "backend.main:app",
-      "buildCommand": "python -m backend.import_data"
+      "buildCommand": "python -m backend.import_data && python -m backend.seed_reviews "
     }
   },
   "rewrites": [
