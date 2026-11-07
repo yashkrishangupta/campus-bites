@@ -5,20 +5,20 @@
       "root": "frontend/"
     },
     "backend": {
-      "root": "backend/",
+      "root": ".",
       "framework": "fastapi",
-      "entrypoint": "main:app"
+      "entrypoint": "backend.main:app"
     }
   },
   "rewrites": [
     {
-      "source": "/shops/(.*)",
+      "source": "/shops",
       "destination": {
         "service": "backend"
       }
     },
     {
-      "source": "/shops",
+      "source": "/shops/(.*)",
       "destination": {
         "service": "backend"
       }
